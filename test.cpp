@@ -6,7 +6,17 @@
 #include <string>
 #include <cstdlib>
 #include <iostream>
+#include <cstdlib>
 using namespace std;
+
+void assert(bool expr, int line) {
+    if (!expr) {
+        cout << "Test failed at line " << line << "." << endl;
+        abort();
+    }
+}
+
+#define ASSERT(...) assert(__VA_ARGS__, __LINE__)
 
 const int TEST_CASES = 1000;
 
@@ -26,19 +36,13 @@ void test_sign(const string &typeName) {
     TInt result;
 
     bool succ = check_add(a, b, result);
-    if (succ ^ ((int64_t)a + (int64_t)b == (int64_t)result)) {
-        cout << "Wrong for " << typeName << " : " << a << " + " << b << endl;
-    }
-
+    ASSERT(succ == ((int64_t)a + (int64_t)b == (int64_t)result));
+    
     succ = check_sub(a, b, result);
-    if (succ ^ ((int64_t)a - (int64_t)b == (int64_t)result)) {
-        cout << "Wrong for " << typeName << " : " << a << " - " << b << endl;
-    }
+    ASSERT(succ == ((int64_t)a - (int64_t)b == (int64_t)result));
 
     succ = check_mul(a, b, result);
-    if (succ ^ ((int64_t)a * (int64_t)b == (int64_t)result)) {
-        cout << "Wrong for " << typeName << " : " << a << " * " << b << endl;
-    }
+    ASSERT(succ == ((int64_t)a * (int64_t)b == (int64_t)result));
 }
 
 template<typename TInt>
@@ -48,19 +52,13 @@ void test_unsign(const string &typeName) {
     TInt result;
 
     bool succ = check_uadd(a, b, result);
-    if (succ ^ ((int64_t)a + (int64_t)b == (int64_t)result)) {
-        cout << "Wrong for " << typeName << " : " << a << " + " << b << endl;
-    }
+    ASSERT(succ == ((int64_t)a + (int64_t)b == (int64_t)result)); 
 
     succ = check_usub(a, b, result);
-    if (succ ^ ((int64_t)a - (int64_t)b == (int64_t)result)) {
-        cout << "Wrong for " << typeName << " : " << a << " - " << b << endl;
-    }
+    ASSERT(succ == ((int64_t)a - (int64_t)b == (int64_t)result));
 
     succ = check_umul(a, b, result);
-    if (succ ^ ((int64_t)a * (int64_t)b == (int64_t)result)) {
-        cout << "Wrong for " << typeName << " : " << a << " * " << b << endl;
-    }
+    ASSERT(succ == ((int64_t)a * (int64_t)b == (int64_t)result)); 
 }
 int main() {
     srand(time(NULL));
